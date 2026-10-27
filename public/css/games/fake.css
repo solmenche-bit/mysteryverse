@@ -1,0 +1,57 @@
+/* Find the Fake */
+.ff-prompt { text-align: center; font-size: 1.25rem; color: var(--muted); }
+.ff-prompt b { color: var(--text); }
+.ff-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; justify-items: center; }
+.ff-card {
+  position: relative; width: min(100%, max(200px, calc((100vh - 340px - var(--howbar-h, 0px)) / 2 * 4 / 3))); aspect-ratio: 4 / 3;
+  border-radius: 18px; overflow: hidden; border: 3px solid var(--line-strong); background: #0b1230; cursor: pointer;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s, filter 0.35s, opacity 0.35s;
+  animation: ffIn 0.5s cubic-bezier(0.2, 1.3, 0.4, 1) both;
+}
+.ff-card:nth-child(2) { animation-delay: 0.06s; } .ff-card:nth-child(3) { animation-delay: 0.12s; }
+.ff-card:nth-child(4) { animation-delay: 0.18s; } .ff-card:nth-child(5) { animation-delay: 0.24s; } .ff-card:nth-child(6) { animation-delay: 0.3s; }
+@keyframes ffIn { from { opacity: 0; transform: scale(0.85) translateY(12px); } }
+.ff-card:hover, .ff-card:focus-visible { transform: translateY(-4px); border-color: var(--cyan); box-shadow: 0 0 26px rgba(52, 211, 153, 0.45), 0 16px 34px rgba(0, 0, 0, 0.45); }
+.ff-card.selected { border-color: var(--warn); transform: scale(1.03); box-shadow: 0 0 0 5px rgba(251, 191, 36, 0.35), 0 0 34px rgba(251, 191, 36, 0.5); z-index: 2; }
+.ff-svg { position: relative; width: 100%; height: 100%; }
+.ff-svg > svg { display: block; width: 100%; height: 100%; }
+.ff-num {
+  position: absolute; top: 8px; left: 8px; width: 2.1em; height: 2.1em; border-radius: 50%; display: grid; place-items: center;
+  background: rgba(6, 10, 28, 0.85); color: #fff; font-weight: 900; font-size: 1.35rem; border: 2px solid var(--cyan); pointer-events: none;
+}
+.ff-zoom {
+  position: absolute; top: 8px; right: 8px; width: 2.4em; height: 2.4em; border-radius: 50%; border: 1px solid var(--line-strong);
+  background: rgba(6, 10, 28, 0.75); cursor: pointer; font-size: 1rem; opacity: 0.85; transition: transform 0.15s, opacity 0.15s;
+}
+.ff-zoom:hover { transform: scale(1.12); opacity: 1; }
+.ff-stamp {
+  display: none; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%) rotate(-14deg); pointer-events: none;
+  padding: 0.15em 0.6em; border: 5px solid #34d399; border-radius: 12px; color: #34d399; background: rgba(6, 10, 28, 0.6);
+  font-size: clamp(1.4rem, 3vw, 2.4rem); font-weight: 900; letter-spacing: 0.08em; white-space: nowrap;
+}
+.ff-card.ff-real { filter: grayscale(0.85) brightness(0.55); cursor: not-allowed; transform: none; box-shadow: none; }
+.ff-card.ff-real .ff-stamp { display: block; animation: ffStamp 0.35s cubic-bezier(0.2, 1.6, 0.4, 1); }
+.ff-card.ff-dim { opacity: 0.45; filter: grayscale(0.6); }
+.ff-card.ff-fake { border-color: var(--bad); filter: none; opacity: 1; transform: scale(1.04); z-index: 3; box-shadow: 0 0 0 5px rgba(251, 113, 133, 0.45), 0 0 46px rgba(251, 113, 133, 0.65); }
+.ff-card.ff-fake .ff-stamp { display: block; top: auto; bottom: 10px; transform: translate(-50%, 0) rotate(-4deg); border-color: #fb7185; color: #fb7185; font-size: 1.3rem; animation: ffStamp 0.35s 0.9s both; }
+@keyframes ffStamp { from { opacity: 0; transform: translate(-50%, -50%) rotate(-14deg) scale(2.2); } }
+.ff-ring { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; }
+.ff-ring circle { fill: none; stroke: #ff2d6f; stroke-width: 7; stroke-linecap: round; filter: drop-shadow(0 0 6px rgba(255, 45, 111, 0.9)); animation: ffDraw 1.2s ease-out 0.25s forwards; }
+@keyframes ffDraw { to { stroke-dashoffset: 0; } }
+.ff-bar { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; padding: 12px 16px; animation: dropIn 0.3s ease; }
+.ff-bar-label { font-size: 1.2rem; white-space: nowrap; }
+.ff-bar .input { flex: 1; min-width: 220px; font-size: 1.1rem; }
+.ff-zoom-wrap { display: flex; flex-direction: column; gap: 12px; }
+.ff-zoom-nav { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.ff-zoom-label { font-size: 1.3rem; }
+.ff-zoom-view { width: 100%; max-height: 66vh; aspect-ratio: 4 / 3; margin: 0 auto; border-radius: 14px; overflow: hidden; border: 2px solid var(--line-strong); }
+.ff-zoom-actions { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
+.ff-reveal { position: relative; width: min(520px, 100%); aspect-ratio: 4 / 3; margin: 0 auto; border-radius: 16px; overflow: hidden; border: 3px solid var(--bad); box-shadow: 0 0 30px rgba(251, 113, 133, 0.4); }
+@media (min-width: 1500px) { .ff-grid { gap: 22px; } }
+@media (max-width: 720px) {
+  .ff-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .ff-card { width: 100%; min-width: 0; }
+  .ff-num { font-size: 1rem; }
+  .ff-bar-label { width: 100%; }
+}
